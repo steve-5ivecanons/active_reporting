@@ -94,7 +94,7 @@ module ActiveReporting
     def order_by_statement(direction:)
       direction = direction.to_s.upcase
       raise "Ording direction should be 'asc' or 'desc'" unless %w[ASC DESC].include?(direction)
-      "#{label_fragment} #{direction}"
+      Arel.sql("#{label_fragment} #{direction}")
     end
 
     # Looks up the dimension label callback for the label
@@ -190,9 +190,9 @@ module ActiveReporting
     def datetime_drill_postgress(column)
       case @datetime_drill.to_sym
       when :date
-        "DATE('#{column}')"
+        Arel.sql("DATE('#{column}')")
       else
-        "DATE_TRUNC('#{@datetime_drill}', #{column})"
+        Arel.sql("DATE_TRUNC('#{@datetime_drill}', #{column})")
       end
     end
 
